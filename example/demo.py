@@ -57,3 +57,12 @@ class Engine:
         Close the window and free SDL resources.
         """
         pass
+
+
+class Sprite():
+    def __init__(self, path: str):
+        """
+        Load a texture from the given path.
+        """
+        pass
+    
