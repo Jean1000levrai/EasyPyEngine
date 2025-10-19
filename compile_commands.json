@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/Users/jeansalomon/Documents/projects/easyPyEngine",
+  "command": "/usr/bin/cc -Dengine_EXPORTS -I/opt/homebrew/opt/python@3.14/Frameworks/Python.framework/Versions/3.14/include/python3.14 -I/opt/homebrew/include -I/opt/homebrew/opt/sdl2/include -isystem /Library/Frameworks/SDL2.framework/Headers -F/Library/Frameworks -std=gnu17 -arch arm64 -fPIC -F /Library/Frameworks/ -o CMakeFiles/engine.dir/src/engine.c.o -c /Users/jeansalomon/Documents/projects/easyPyEngine/src/engine.c",
+  "file": "/Users/jeansalomon/Documents/projects/easyPyEngine/src/engine.c",
+  "output": "CMakeFiles/engine.dir/src/engine.c.o"
+}
+]
