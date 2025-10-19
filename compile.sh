@@ -1,21 +1,24 @@
 #!/bin/bash
 
-# Pour lancer, utiliser sh compile.sh ou bash compile.sh ou ./compile.sh (nécessite autorisation (chmod))
-
-# stoppe le script en cas d'erreur
+# Stop on first error
 set -e  
 
-# dossier build
+# Build folder
 mkdir -p build
 
-# les fichiers sources
+# Source files
 SRC_FILES=$(find src/ -name '*.c')
 
-# les flags
-CFLAGS=$(pkg-config --cflags sdl3)
-LDFLAGS=$(pkg-config --libs sdl3)
+# SDL flags
+CFLAGS="$(pkg-config --cflags sdl2)"
+LDFLAGS="$(pkg-config --libs sdl2)"
 
-# compilation
-gcc $SRC_FILES -o build/application $CFLAGS $LDFLAGS -Iinclude
+# Python flags
+CFLAGS+=" $(python3-config --cflags)"
+LDFLAGS+=" $(python3-config --ldflags)"
+
+# Compile
+gcc -g $CFLAGS -Iinclude $SRC_FILES -o build/application $LDFLAGS
+
+# Run
 ./build/application
-
