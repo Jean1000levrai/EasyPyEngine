@@ -1,3 +1,36 @@
-build/
+
 .cache/
-CmakeLists.txt
+
+# CMake build directories
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/Makefile
+/*.cmake.user
+/*.cbp
+/*.ninja
+/*.sln
+/*.vcxproj*
+/*.xcodeproj
+*.dir
+
+# Executables and binaries
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dylib
+
+# Temporary files
+*.log
+*.obj
+*.o
+*.a
+*.lib
+*.class
+
+# IDE-specific files
+.vscode/
+.idea/
+*.swp

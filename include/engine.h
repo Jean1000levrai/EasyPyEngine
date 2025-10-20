@@ -7,7 +7,7 @@ typedef struct{
     SDL_Renderer *renderer;
     int running;
     Uint64 last_time;
-    const Uint8 keyboard_state;
+    const Uint8 *keyboard_state;
 
 } EngineObject ;
 
