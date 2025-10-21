@@ -1,7 +1,10 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/engine.h"
+
+#include "graphics.h"
+
+// U S E F U L  F U N C T I O N S
 
 static void sdl_die(const char *msg) {
     fprintf(stderr, "SDL ERROR: %s: %s\n", msg, SDL_GetError());
@@ -9,6 +12,16 @@ static void sdl_die(const char *msg) {
     exit(1);
 }
 
+
+// E N G I N E  F U N C T I O N S
+
+
+void update_callback(EngineObject *self){
+    // update callback
+
+    draw_rect(self, 100, 100, 100, 100, 255, 0, 0, 1);
+    
+}
 
 void engine_init(EngineObject *self, char *title, int width, int height){
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -45,7 +58,7 @@ void engine_clear(EngineObject *self, int r, int g, int b){
     SDL_RenderClear(self->renderer);
 }
 
-void engine_run(EngineObject *self){
+void engine_run(EngineObject *self, void (*update_callback)(EngineObject *self)){
     // main loop
     SDL_Event event;
     while (self->running) {
@@ -54,6 +67,7 @@ void engine_run(EngineObject *self){
                 self->running = 0;
             }
         engine_clear(self, 0, 0, 0);
+        update_callback(self);
         SDL_RenderPresent(self->renderer);
         }
     }
@@ -70,7 +84,7 @@ int main(){
     EngineObject engine;
 
     engine_init(&engine, "test", 1000, 500);
-    engine_run(&engine);  
+    engine_run(&engine, update_callback);  
     engine_quit(&engine);
 
     return 0;

@@ -6,20 +6,19 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Python
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-include_directories(${Python3_INCLUDE_DIRS})
 
 # SDL2
 find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
-if(APPLE)
-    include_directories(/opt/homebrew/include /opt/homebrew/opt/sdl2/include)
-    link_directories(/opt/homebrew/lib /opt/homebrew/opt/sdl2/lib)
-endif()
 
-# Build Python extension
-add_library(engine MODULE src/engine.c)
+add_library(engine MODULE
+    src/engine.c
+    src/graphics.c
+)
+
 set_target_properties(engine PROPERTIES
     PREFIX ""
     SUFFIX ".so"
 )
-target_link_libraries(engine ${Python3_LIBRARIES} ${SDL2_LIBRARIES})
+
+target_include_directories(engine PRIVATE ${Python3_INCLUDE_DIRS} ${SDL2_INCLUDE_DIRS} include)
+target_link_libraries(engine PRIVATE ${Python3_LIBRARIES} ${SDL2_LIBRARIES})

@@ -2,7 +2,7 @@
 #include <Python.h>
 
 typedef struct{
-    PyObject_HEAD;
+    PyObject_HEAD
     SDL_Window *window;
     SDL_Renderer *renderer;
     int running;
@@ -11,12 +11,3 @@ typedef struct{
 
 } EngineObject ;
 
-
-typedef struct{
-    PyObject_HEAD;
-    SDL_Renderer *renderer;
-    int x;
-    int y;
-    int width;
-    int height;
-} SpriteObject;
