@@ -10,6 +10,7 @@
 - python
 - C17+
 - SDL2
+- SDL2_image
 
 ### Clone
 

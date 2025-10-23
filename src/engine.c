@@ -20,6 +20,8 @@ void update_callback(EngineObject *self){
     // update callback
 
     draw_rect(self, 100, 100, 100, 100, 255, 0, 0, 1);
+    draw_rect(self, 500, 100, 100, 100, 0, 0, 255, 0);
+    draw_line(self, 100, 300, 600, 500, 0, 255, 0);
     
 }
 

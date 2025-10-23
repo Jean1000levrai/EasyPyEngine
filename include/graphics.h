@@ -14,17 +14,9 @@ extern "C" {
 void draw_rect(EngineObject *engine, int x, int y, int width, int height,
                int r, int g, int b, int filled);
 
-// S T R U C T U R E S
-typedef struct{
-    PyObject_HEAD
-    SDL_Renderer *renderer;
-    int x;
-    int y;
-    int width;
-    int height;
-} SpriteObject;
+void draw_line(EngineObject *engine, int x1, int y1, int x2, int y2,
+               int r, int g, int b);
 
-// C O N S T A N T S
 
 
 #ifdef __cplusplus

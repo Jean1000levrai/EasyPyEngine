@@ -9,6 +9,7 @@ find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 # SDL2
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
 
 add_library(engine MODULE
     src/engine.c
