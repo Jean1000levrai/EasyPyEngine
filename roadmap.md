@@ -10,16 +10,17 @@ to do 🤡
 - event loop 😎
 - shutdown 😎
 
-## step 2: rendering features (~5-8 hours) 😰
+## step 2: rendering features (~5-8 hours) 😎
 
-- render a square
-- render a sprite
-- texture loader with path to an image
+- render a square 😎
+- render a sprite 😎
+- texture loader with path to an image 😎
 
 ## step 3: inputs + deltatime (~3 hours) 🤡
 
-- key pressed -> returns the key self->keyboardState
-- add delta time
+- key pressed -> returns the key self->keyboardState 😎
+- mouse
+- add delta time 😎
 
 ## step 4: physics 🤡
 

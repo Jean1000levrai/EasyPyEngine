@@ -60,9 +60,46 @@ class Engine:
 
 
 class Sprite():
-    def __init__(self, path: str):
+    def __init__(self, path: str, x: int = 0, y: int = 0, w: int = 0, h: int = 0):
         """
         Load a texture from the given path.
         """
         pass
+
+    def free(self):
+        """
+        Free the texture.
+        """
+        pass
+
+
+if __name__ == "__main__":
+    engine = Engine("My Game", 800, 600) # creates the window
+
+    sprite = Sprite("path/to/texture.png", x=100, y=100, w=100, h=100)
+
+    engine.draw_rect(100, 100, 100, 100, (255, 0, 0))
+    engine.draw_sprite(sprite, 200, 200)
+
+    def move(sprite, dt):
+        if engine.is_key_pressed("w"):
+            Sprite.x += 1 * dt
+        if engine.is_key_pressed("s"):
+            Sprite.x -= 1 * dt
+        if engine.is_key_pressed("a"):
+            Sprite.y += 1 * dt
+        if engine.is_key_pressed("d"):
+            Sprite.y -= 1 * dt
+
+
+    def update(engine, dt):
+        engine.clear()
+
+        # draw the background
+        # draw a tree
+
+        move(sprite, dt)
+        engine.draw_sprite(sprite, Sprite.x, Sprite.y, Sprite.w, Sprite.h)
+
+    engine.run(update)  # run the update() function each frame
     

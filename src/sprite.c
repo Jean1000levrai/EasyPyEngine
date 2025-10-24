@@ -1,6 +1,5 @@
 #include "sprite.h"
-#include "SDL_image.h"
-#include <string.h>
+#include "SDL2/SDL_image.h"
 
 
 SpriteObject* load_sprite(SDL_Renderer *renderer, int width, int height, const char *path) {

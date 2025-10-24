@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "graphics.h"
+#include "input.h"
 #include "sprite.h"
 
 // U S E F U L  F U N C T I O N S
@@ -19,14 +20,18 @@ static void sdl_die(const char *msg) {
 // E N G I N E  F U N C T I O N S
 
 
-void update_callback(EngineObject *self){
+void update_callback(EngineObject *self, float dt){
     // update callback
 
     draw_rect(self, 100, 100, 100, 100, 255, 0, 0, 1);
     draw_rect(self, 500, 100, 100, 100, 0, 0, 255, 0);
     draw_line(self, 100, 300, 600, 500, 0, 255, 0);
-    SpriteObject *sprite = load_sprite(self->renderer, 0, 0, "../assets/profilePicV1.2.png");
+    SpriteObject *sprite = load_sprite(self->renderer, 100, 100, "../assets/profilePicV1.2.png");
     draw_sprite(self, sprite, 400, 200);
+    draw_sprite(self, sprite, 500, 200);
+    free_sprite(sprite);
+
+    printf("%d\n", is_key_pressed(self, "w"));
 }
 
 void engine_init(EngineObject *self, char *title, int width, int height){
@@ -70,18 +75,36 @@ void engine_clear(EngineObject *self, int r, int g, int b){
     SDL_RenderClear(self->renderer);
 }
 
-void engine_run(EngineObject *self, void (*update_callback)(EngineObject *self)){
+void engine_run(EngineObject *self, void (*update_callback)(EngineObject *self, float dt)){
     // main loop
+    Uint64 last_time = SDL_GetPerformanceCounter();
     SDL_Event event;
+
     while (self->running) {
+        // --- Input & events ---
         while (SDL_PollEvent(&event)){
             if (event.type == SDL_QUIT){
                 self->running = 0;
             }
-        engine_clear(self, 0, 0, 0);
-        update_callback(self);
-        SDL_RenderPresent(self->renderer);
         }
+
+        // --- update keyboard state ---
+        self->keyboard_state = SDL_GetKeyboardState(NULL);
+        
+        // --- delta time ---
+        Uint64 now = SDL_GetPerformanceCounter();
+        float dt = (float)(now - last_time) / SDL_GetPerformanceFrequency();
+        last_time = now;
+
+        // --- Rendering & callback ---
+        engine_clear(self, 0, 0, 0);
+        update_callback(self, dt);
+        SDL_RenderPresent(self->renderer);
+
+        // Delay to limit cpu usage, optimisation
+        // small compromise between performance and cpu usage
+        SDL_Delay(1);
+
     }
 }
 
@@ -98,6 +121,7 @@ int main(){
     engine_init(&engine, "test", 1000, 500);
     engine_run(&engine, update_callback);  
     engine_quit(&engine);
+
 
     return 0;
 }
