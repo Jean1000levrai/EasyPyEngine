@@ -7,19 +7,37 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Python
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
-# SDL2
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
+# SDL2 (via pkg-config for reliability on macOS/Homebrew)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SDL2 REQUIRED sdl2)
+pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 
-add_library(engine MODULE
-    src/engine.c
-    src/graphics.c
-)
+file(GLOB SRC_FILES src/*.c)
+add_library(engine MODULE ${SRC_FILES})
 
+# Shared object naming for Python module
 set_target_properties(engine PROPERTIES
     PREFIX ""
     SUFFIX ".so"
 )
 
-target_include_directories(engine PRIVATE ${Python3_INCLUDE_DIRS} ${SDL2_INCLUDE_DIRS} include)
-target_link_libraries(engine PRIVATE ${Python3_LIBRARIES} ${SDL2_LIBRARIES})
+# Includes
+target_include_directories(engine PRIVATE
+    ${Python3_INCLUDE_DIRS}
+    ${SDL2_INCLUDE_DIRS}
+    ${SDL2_IMAGE_INCLUDE_DIRS}
+    include
+)
+# Explicit paths for Homebrew SDL2 libs
+set(SDL2_LIB_PATH /opt/homebrew/lib/libSDL2.dylib)
+set(SDL2_IMAGE_LIB_PATH /opt/homebrew/lib/libSDL2_image.dylib)
+
+target_link_libraries(engine PRIVATE
+    ${Python3_LIBRARIES}
+    ${SDL2_LIB_PATH}
+    ${SDL2_IMAGE_LIB_PATH}
+)
+
+
+# Explicitly tell the linker where Homebrew keeps libraries
+link_directories(/opt/homebrew/lib)

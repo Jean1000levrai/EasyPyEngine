@@ -1,6 +1,13 @@
 #include <SDL2/SDL.h>
 #include <Python.h>
 
+#ifndef ENGINE_H
+#define ENGINE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct{
     PyObject_HEAD
     SDL_Window *window;
@@ -11,3 +18,9 @@ typedef struct{
 
 } EngineObject ;
 
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

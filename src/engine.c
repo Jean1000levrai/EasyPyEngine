@@ -1,13 +1,16 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "graphics.h"
+#include "sprite.h"
 
 // U S E F U L  F U N C T I O N S
 
 static void sdl_die(const char *msg) {
     fprintf(stderr, "SDL ERROR: %s: %s\n", msg, SDL_GetError());
+    IMG_Quit();
     SDL_Quit();
     exit(1);
 }
@@ -22,12 +25,19 @@ void update_callback(EngineObject *self){
     draw_rect(self, 100, 100, 100, 100, 255, 0, 0, 1);
     draw_rect(self, 500, 100, 100, 100, 0, 0, 255, 0);
     draw_line(self, 100, 300, 600, 500, 0, 255, 0);
-    
+    SpriteObject *sprite = load_sprite(self->renderer, 0, 0, "../assets/profilePicV1.2.png");
+    draw_sprite(self, sprite, 400, 200);
 }
 
 void engine_init(EngineObject *self, char *title, int width, int height){
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         sdl_die("init failed");
+    }
+
+    // Initialize SDL_image
+    int img_flags = IMG_INIT_PNG | IMG_INIT_JPG;
+    if (!(IMG_Init(img_flags) & img_flags)) {
+        sdl_die("ERROR: IMG_Init failed");
     }
 
     // Create window
