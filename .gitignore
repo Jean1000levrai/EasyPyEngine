@@ -1,5 +1,6 @@
 
 .cache/
+assets/profilePicV1.2.PNG
 
 # CMake build directories
 /build/
