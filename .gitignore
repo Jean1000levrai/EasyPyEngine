@@ -1,7 +1,8 @@
 
 .cache/
 assets/profilePicV1.2.PNG
-
+.venv/
+easyPyEngine.egg-info/
 
 # CMake build directories
 /build/

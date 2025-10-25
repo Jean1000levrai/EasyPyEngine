@@ -1,22 +1,32 @@
 from setuptools import setup, Extension
-from Cython.Build import cythonize
-import sysconfig
+import sys
+import os
 
-engine_extension = Extension(
-    "EasyPyEngine",
-    sources=["python/engine_wrapper.pyx"],
-    include_dirs=[
-        "include",  # your own headers
-        "/opt/homebrew/include",  # this allows #include <SDL2/SDL.h>
-        sysconfig.get_path("include")
+
+sdl2_include = "/opt/homebrew/include"
+sdl2_lib = "/opt/homebrew/lib"
+
+engine_module = Extension(
+    "easyPyEngine",  # Python module name
+    sources=[
+        "src/engine.c",
+        "src/graphics.c",
+        "src/input.c",
+        "src/sprite.c",
+        "python/easyPyEngineModule.c",  # wrapper functions
     ],
-    library_dirs=["/opt/homebrew/lib"],
-    libraries=["SDL2", "SDL2_image"],
-    language="c"
+    include_dirs=[
+        sdl2_include,
+        "include",
+    ],
+    library_dirs=[sdl2_lib],
+    libraries=["SDL2", "SDL2_image"],  # SDL2 libraries
+    extra_compile_args=["-std=c17"],
 )
 
 setup(
-    name="EasyPyEngine",
-    version="0.0.1",
-    ext_modules=cythonize(engine_extension, compiler_directives={"language_level": "3"})
+    name="easyPyEngine",
+    version="0.1",
+    description="Minimal 2D game engine in C with SDL2",
+    ext_modules=[engine_module],
 )

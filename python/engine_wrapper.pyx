@@ -1,28 +1,18 @@
 # engine_wrapper.pyx
-from libc.stdlib cimport malloc, free
+from libc.stdlib cimport malloc, free, NULL
 
 # ---- SDL ----
 cdef extern from "SDL2/SDL.h":
     cdef struct SDL_Renderer:
         pass
 
-# ---- helper ----
-cdef extern from "engine_helper.h":
-    cdef struct EngineObject
-    cdef struct SpriteObject
-
-    EngineObject* engine_create(const char* title, int width, int height)
-    void engine_destroy(EngineObject* engine)
-    SpriteObject* sprite_load(EngineObject* engine, int width, int height, const char* path)
-
-
 # ---- Engine core ----
-cdef extern from "../include/engine.h":
+cdef extern from "engine.h":
     cdef struct EngineObject:
         SDL_Renderer *renderer
 
     void engine_init(EngineObject *self, const char *title, int width, int height)
-    void engine_run(EngineObject *self, void (*update_callback)(EngineObject *self, float dt) noexcept)
+    void engine_run(EngineObject *self, void (*update_callback)(EngineObject *self, float dt))
     void engine_clear(EngineObject *self, unsigned char r, unsigned char g, unsigned char b)
     void engine_quit(EngineObject *self)
 
@@ -52,22 +42,22 @@ cdef extern from "input.h":
 # --------
 cdef object py_callback = None
 
-cdef void _update_callback(EngineObject* self, float dt) nogil except *:
-    if py_callback is not None:
-        with gil:
+cdef void _update_callback(EngineObject *self, float dt) except *:
+    with gil:
+        if py_callback is not None:
             py_callback(dt)
 
-
 # --------
-# Engine class
+# Python-exposed Engine class
 # --------
 cdef class Engine:
     cdef EngineObject *_engine
 
     def __cinit__(self, str title, int width, int height):
-        self._engine = engine_create(title.encode("utf-8"), width, height)
+        self._engine = <EngineObject *> malloc(sizeof(EngineObject))
         if not self._engine:
             raise MemoryError("Failed to allocate EngineObject")
+        engine_init(self._engine, title.encode("utf-8"), width, height)
 
     def run(self, callback):
         global py_callback
@@ -80,7 +70,8 @@ cdef class Engine:
 
     def quit(self):
         if self._engine != NULL:
-            engine_destroy(self._engine)
+            engine_quit(self._engine)
+            free(self._engine)
             self._engine = NULL
 
     def is_key_pressed(self, str keyName):
@@ -106,10 +97,10 @@ cdef class Sprite:
     cdef SpriteObject *_sprite
 
     def __cinit__(self, Engine engine, int width, int height, str path):
-        self._sprite = sprite_load(engine._engine, width, height, path.encode("utf-8"))
+        self._sprite = load_sprite(engine._engine.renderer, width, height, path.encode("utf-8"))
         if not self._sprite:
             raise MemoryError("Failed to load sprite")
-            
+
     def draw(self, Engine engine, int x, int y):
         draw_sprite(engine._engine, self._sprite, x, y)
 
