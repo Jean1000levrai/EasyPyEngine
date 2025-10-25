@@ -18,6 +18,7 @@ typedef struct{
     int running;
     Uint64 last_time;
     const Uint8 *keyboard_state;
+    PyObject* update_callback;
 
 } EngineObject ;
 
