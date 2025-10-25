@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "engine.h"
 #include "graphics.h"
 #include "input.h"
 #include "sprite.h"
@@ -19,7 +20,6 @@ static void sdl_die(const char *msg) {
 
 // E N G I N E  F U N C T I O N S
 
-
 void update_callback(EngineObject *self, float dt){
     // update callback
 
@@ -31,7 +31,7 @@ void update_callback(EngineObject *self, float dt){
     draw_sprite(self, sprite, 500, 200);
     free_sprite(sprite);
 
-    printf("%d\n", is_key_pressed(self, "w"));
+    // printf("%d\n", is_key_pressed(self, "w"));
 }
 
 void engine_init(EngineObject *self, char *title, int width, int height){

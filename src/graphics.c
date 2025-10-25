@@ -3,7 +3,6 @@
 
 #include "graphics.h"
 
-// void create_sprite(SpriteObject *sprite, )
 
 void draw_rect(EngineObject *engine, int x, int y, int width, int height,
                int r, int g, int b, int filled)
