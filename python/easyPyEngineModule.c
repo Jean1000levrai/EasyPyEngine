@@ -4,7 +4,7 @@
 #include "engine.h"
 #include "graphics.h"
 #include "sprite.h"
-// #include "input.h"
+#include "input.h"
 
 
 
@@ -82,9 +82,10 @@ static PyObject* py_engine_quit(PyObject* self, PyObject* args){
 }
 
 // CLEAR
-static PyObject* py_engine_clear(PyObject* self, PyObject* args){
+static PyObject* py_engine_clear(PyObject* self, PyObject* args, PyObject* kwds){
+    static char* kwlist[] = {"color", NULL};
     PyObject* py_color = NULL;
-    if (!PyArg_ParseTuple(args, "|O", &py_color)){
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|O",kwlist, &py_color)){
         return NULL;
     }
     
@@ -102,12 +103,13 @@ static PyObject* py_engine_clear(PyObject* self, PyObject* args){
 }
 
 // DRAW RECT
-static PyObject* py_draw_rect(PyObject* self, PyObject* args){
+static PyObject* py_draw_rect(PyObject* self, PyObject* args, PyObject* kwds){
+    static char* kwlist[] = {"x", "y", "width", "height", "color", "filled", NULL};
     PyObject* py_color = NULL;
     int x, y, w, h;
     int f = 0;
 
-    if (!PyArg_ParseTuple(args, "iiii|Oi", &x, &y, &w, &h, &py_color, &f)){
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "iiii|Oi", kwlist, &x, &y, &w, &h, &py_color, &f)){
         return NULL;
     }
     int r = 255, g = 255, b = 255; // default white
@@ -124,11 +126,12 @@ static PyObject* py_draw_rect(PyObject* self, PyObject* args){
 }
 
 // DRAW LINE
-static PyObject* py_draw_line(PyObject* self, PyObject* args){
+static PyObject* py_draw_line(PyObject* self, PyObject* args, PyObject* kwds){
+    static char* kwlist[] = {"x1", "y1", "x2", "y2", "color", NULL};
     PyObject* py_color = NULL;
     int x1, y1, x2, y2;
 
-    if (!PyArg_ParseTuple(args, "iiii|O", &x1, &y1, &x2, &y2, &py_color)){
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "iiii|O", kwlist, &x1, &y1, &x2, &y2, &py_color)){
         return NULL;
     }
     int r = 255, g = 255, b = 255; // default white
@@ -145,15 +148,28 @@ static PyObject* py_draw_line(PyObject* self, PyObject* args){
 }
 
 // DRAW SPRITE
-static PyObject* py_draw_sprite_from_engine(PyObject* self, PyObject* args){
+static PyObject* py_draw_sprite_from_engine(PyObject* self, PyObject* args, PyObject* kwds){
+    static char* kwlist[] = {"sprite", "x", "y", NULL};
     EngineObject* engine = (EngineObject *)self;
     SpriteObject* sprite;
     int x, y;
-    if (!PyArg_ParseTuple(args, "Oii", &sprite, &x, &y)){
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "Oii",kwlist, &sprite, &x, &y)){
         return NULL;
     }
     draw_sprite(engine, sprite, x, y);
     Py_RETURN_NONE;
+}
+
+// KEY PRESS
+static PyObject* py_is_key_pressed(PyObject* self, PyObject* args, PyObject* kwds){
+    static char* kwlist[] = {"key", NULL};
+    EngineObject* engine = (EngineObject *)self;
+    char* key;
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist, &key)){
+        return NULL;
+    }
+    int is_pressed = is_key_pressed(engine, key);
+    return PyLong_FromLong(is_pressed);
 }
 
 // ---- SPRITE ----
@@ -233,13 +249,13 @@ static void Sprite_dealloc(SpriteObject* self) {
 }
 
 // DRAW SPRITE
-static PyObject* py_draw_sprite(PyObject* self, PyObject* args){
-
+static PyObject* py_draw_sprite(PyObject* self, PyObject* args, PyObject* kwds){
+    static char* kwlist[] = {"engine", "x", "y", NULL};
     EngineObject* engine;
     SpriteObject* sprite = (SpriteObject *)self;
     int x, y;
 
-    if (!PyArg_ParseTuple(args, "Oii", &engine, &x, &y)){
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "Oii", kwlist, &engine, &x, &y)){
         return NULL;
     }
     draw_sprite(engine, sprite, x, y);
@@ -253,7 +269,9 @@ static PyObject* py_draw_sprite(PyObject* self, PyObject* args){
 
 // --- GETTERS / SETTERS ---
 
-// sprite widthgetter
+// S P R I T E
+
+// sprite width getter
 static PyObject* Sprite_get_width(SpriteObject* self) {
     return PyLong_FromLong(self->width);
 }
@@ -283,12 +301,47 @@ static int Sprite_set_height(SpriteObject* self, PyObject* value) {
     return 0;
 }
 
+// sprite x getter
+static PyObject* Sprite_get_x(SpriteObject* self) {
+    return PyLong_FromLong(self->x);
+}
+
+// sprite x setter
+static int Sprite_set_x(SpriteObject* self, PyObject* value) {
+    if (!PyLong_Check(value)) {
+        PyErr_SetString(PyExc_TypeError, "x must be an integer");
+        return -1;
+    }
+    self->x = (int)PyLong_AsLong(value);
+    return 0;
+}
+
+// sprite y getter
+static PyObject* Sprite_get_y(SpriteObject* self){
+    return PyLong_FromLong(self->y);
+}
+
+// sprite y setter
+static int Sprite_setter_y(SpriteObject* self, PyObject* value){
+    if (!PyLong_Check(value)){
+        PyErr_SetString(PyExc_TypeError, "y must be an integer");
+        return -1;
+    }
+    self->y = (int)PyLong_AsLong(value);
+    return 0;
+}
+
+// E N G I N E
+
+
 
 // --- TABLE ---
 
 static PyGetSetDef Sprite_getset[] = {
     {"width", (getter)Sprite_get_width, (setter)Sprite_set_width, NULL, NULL},
     {"height", (getter)Sprite_get_height, (setter)Sprite_set_height, NULL, NULL},
+    {"x", (getter)Sprite_get_x, (setter)Sprite_set_x, NULL, NULL},
+    {"y", (getter)Sprite_get_y, (setter)Sprite_setter_y, NULL, NULL},
     {NULL, NULL, NULL, NULL, NULL}
 };
 
@@ -298,19 +351,20 @@ static PyGetSetDef Sprite_getset[] = {
 // ---------------------------------
 
 static PyMethodDef Engine_methods[] = {
-    {"draw_rect", py_draw_rect, METH_VARARGS, "Draw a Rectangle"},
+    {"draw_rect", (PyCFunction)py_draw_rect, METH_VARARGS | METH_KEYWORDS, "Draw a Rectangle"},
     {"run", py_engine_run, METH_VARARGS, "The main loop of the Engine"},
     {"quit", py_engine_quit, METH_VARARGS, "Quit the Engine"},
-    {"clear", py_engine_clear, METH_VARARGS, "Clear the screen"},
-    {"draw_line", py_draw_line, METH_VARARGS, "Draw a Line"},
-    {"draw_sprite", py_draw_sprite_from_engine, METH_VARARGS, "Draw a Sprite"},
+    {"clear", (PyCFunction)py_engine_clear, METH_VARARGS | METH_KEYWORDS, "Clear the screen"},
+    {"draw_line", (PyCFunction)py_draw_line, METH_VARARGS | METH_KEYWORDS, "Draw a Line"},
+    {"draw_sprite", (PyCFunction)py_draw_sprite_from_engine, METH_VARARGS | METH_KEYWORDS, "Draw a Sprite"},
+    {"is_key_pressed", (PyCFunction)py_is_key_pressed, METH_VARARGS | METH_KEYWORDS, "Check if a key is pressed"},
     // ...
 
     {NULL, NULL, 0, NULL}
 };
 
 static PyMethodDef Sprite_methods[] = {
-    {"draw", py_draw_sprite, METH_VARARGS, "Draw a Sprite"},
+    {"draw", (PyCFunction)py_draw_sprite, METH_VARARGS | METH_KEYWORDS, "Draw a Sprite"},
     // ...
     {NULL, NULL, 0, NULL}
 };

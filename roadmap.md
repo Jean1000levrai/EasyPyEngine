@@ -24,6 +24,11 @@ to do 🤡
 - add delta time 😎
 
 ## Enhancement
+
+### sprites
+- flip
+- rotate
+
 ### physics 🤡
 
 - vector2
