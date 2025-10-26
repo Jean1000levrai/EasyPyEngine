@@ -8,8 +8,9 @@
 
 
 
-
+// -----------------------------------------
 // ---- P Y T H O N   F U N C T I O N S ----
+// -----------------------------------------
 
 // INIT
 // tp_new
@@ -36,7 +37,6 @@ static int Engine_init(EngineObject* self, PyObject* args, PyObject* kwds){
     engine_init(self, (char*)title, width, height);
     return 0;
 }
-
 
 // MAIN LOOP
 
@@ -74,7 +74,6 @@ static PyObject* py_engine_run(PyObject* self, PyObject* args){
     Py_RETURN_NONE;
 }
 
-
 // QUIT
 static PyObject* py_engine_quit(PyObject* self, PyObject* args){
     EngineObject* engine = (EngineObject *)self;
@@ -102,7 +101,6 @@ static PyObject* py_engine_clear(PyObject* self, PyObject* args){
     Py_RETURN_NONE;
 }
 
-
 // DRAW RECT
 static PyObject* py_draw_rect(PyObject* self, PyObject* args){
     PyObject* py_color = NULL;
@@ -125,7 +123,6 @@ static PyObject* py_draw_rect(PyObject* self, PyObject* args){
     Py_RETURN_NONE;
 }
 
-
 // DRAW LINE
 static PyObject* py_draw_line(PyObject* self, PyObject* args){
     PyObject* py_color = NULL;
@@ -144,6 +141,18 @@ static PyObject* py_draw_line(PyObject* self, PyObject* args){
     EngineObject* engine = (EngineObject *)self;
     draw_line(engine, x1, y1, x2, y2, r, g, b);
 
+    Py_RETURN_NONE;
+}
+
+// DRAW SPRITE
+static PyObject* py_draw_sprite_from_engine(PyObject* self, PyObject* args){
+    EngineObject* engine = (EngineObject *)self;
+    SpriteObject* sprite;
+    int x, y;
+    if (!PyArg_ParseTuple(args, "Oii", &sprite, &x, &y)){
+        return NULL;
+    }
+    draw_sprite(engine, sprite, x, y);
     Py_RETURN_NONE;
 }
 
@@ -172,7 +181,6 @@ static SDL_Texture *load_texture(SDL_Renderer *renderer, const char *path) {
     }
     return texture;
 }
-
 
 // tp_init
 static int Sprite_init(SpriteObject* self, PyObject* args, PyObject* kwds){
@@ -215,7 +223,6 @@ static int Sprite_init(SpriteObject* self, PyObject* args, PyObject* kwds){
     return 0;
 }
 
-
 // tp_dealloc
 static void Sprite_dealloc(SpriteObject* self) {
     if (self->texture) {
@@ -225,8 +232,24 @@ static void Sprite_dealloc(SpriteObject* self) {
     Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
+// DRAW SPRITE
+static PyObject* py_draw_sprite(PyObject* self, PyObject* args){
 
+    EngineObject* engine;
+    SpriteObject* sprite = (SpriteObject *)self;
+    int x, y;
+
+    if (!PyArg_ParseTuple(args, "Oii", &engine, &x, &y)){
+        return NULL;
+    }
+    draw_sprite(engine, sprite, x, y);
+    Py_RETURN_NONE;
+}
+
+
+// -----------------------------
 // ---- A T T R I B U T E S ----
+// -----------------------------
 
 // --- GETTERS / SETTERS ---
 
@@ -244,7 +267,6 @@ static int Sprite_set_width(SpriteObject* self, PyObject* value) {
     self->width = (int)PyLong_AsLong(value);
     return 0;
 }
-
 
 // sprite height getter
 static PyObject* Sprite_get_height(SpriteObject* self) {
@@ -271,7 +293,9 @@ static PyGetSetDef Sprite_getset[] = {
 };
 
 
+// ---------------------------------
 // ---- M E T H O D   T A B L E ----
+// ---------------------------------
 
 static PyMethodDef Engine_methods[] = {
     {"draw_rect", py_draw_rect, METH_VARARGS, "Draw a Rectangle"},
@@ -279,19 +303,22 @@ static PyMethodDef Engine_methods[] = {
     {"quit", py_engine_quit, METH_VARARGS, "Quit the Engine"},
     {"clear", py_engine_clear, METH_VARARGS, "Clear the screen"},
     {"draw_line", py_draw_line, METH_VARARGS, "Draw a Line"},
+    {"draw_sprite", py_draw_sprite_from_engine, METH_VARARGS, "Draw a Sprite"},
     // ...
 
     {NULL, NULL, 0, NULL}
 };
 
 static PyMethodDef Sprite_methods[] = {
+    {"draw", py_draw_sprite, METH_VARARGS, "Draw a Sprite"},
     // ...
     {NULL, NULL, 0, NULL}
 };
 
 
-
+// -------------------------------------
 // ---- P Y T H O N   O B J E C T S ----
+// -------------------------------------
 
 static PyTypeObject EngineType = {
     PyVarObject_HEAD_INIT(NULL, 0)
@@ -318,7 +345,9 @@ static PyTypeObject SpriteType = {
 };
 
 
+// ---------------------------------------------
 // ---- I N I T   P Y T H O N   M O D U L E ----
+// ---------------------------------------------
 
 static struct PyModuleDef easyPyEngine_module = {
     PyModuleDef_HEAD_INIT,
