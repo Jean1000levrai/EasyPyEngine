@@ -1,11 +1,11 @@
 #include <Python.h>
 #include <SDL2/SDL.h>
-#include <string.h>
 
 #include "engine.h"
 #include "graphics.h"
-#include "input.h"
 #include "sprite.h"
+// #include "input.h"
+
 
 
 
@@ -36,6 +36,7 @@ static int Engine_init(EngineObject* self, PyObject* args, PyObject* kwds){
     engine_init(self, (char*)title, width, height);
     return 0;
 }
+
 
 // MAIN LOOP
 
@@ -71,21 +72,51 @@ static PyObject* py_engine_run(PyObject* self, PyObject* args){
 
     engine_run(engine, call_python_callback);
     Py_RETURN_NONE;
+}
+
+
+// QUIT
+static PyObject* py_engine_quit(PyObject* self, PyObject* args){
+    EngineObject* engine = (EngineObject *)self;
+    engine_quit(engine);
+    Py_RETURN_NONE;
+}
+
+// CLEAR
+static PyObject* py_engine_clear(PyObject* self, PyObject* args){
+    PyObject* py_color = NULL;
+    if (!PyArg_ParseTuple(args, "|O", &py_color)){
+        return NULL;
+    }
+    
+    int r = 0, g = 0, b = 0;  // default color: black
+    if (py_color && PyTuple_Check(py_color) && PyTuple_Size(py_color) == 3) {
+        r = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 0));
+        g = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 1));
+        b = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 2));
     }
 
 
-
-
+    EngineObject* engine = (EngineObject *)self;
+    engine_clear(engine, r, g, b);
+    Py_RETURN_NONE;
+}
 
 
 // DRAW RECT
 static PyObject* py_draw_rect(PyObject* self, PyObject* args){
+    PyObject* py_color = NULL;
     int x, y, w, h;
-    int r, g, b;
-    int f;
+    int f = 0;
 
-    if (!PyArg_ParseTuple(args, "iiiiiiii", &x, &y, &w, &h, &r, &g, &b, &f)){
+    if (!PyArg_ParseTuple(args, "iiii|Oi", &x, &y, &w, &h, &py_color, &f)){
         return NULL;
+    }
+    int r = 255, g = 255, b = 255; // default white
+    if (py_color && PyTuple_Check(py_color) && PyTuple_Size(py_color) == 3) {
+        r = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 0));
+        g = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 1));
+        b = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 2));
     }
 
     EngineObject* engine = (EngineObject *)self;
@@ -95,14 +126,166 @@ static PyObject* py_draw_rect(PyObject* self, PyObject* args){
 }
 
 
+// DRAW LINE
+static PyObject* py_draw_line(PyObject* self, PyObject* args){
+    PyObject* py_color = NULL;
+    int x1, y1, x2, y2;
+
+    if (!PyArg_ParseTuple(args, "iiii|O", &x1, &y1, &x2, &y2, &py_color)){
+        return NULL;
+    }
+    int r = 255, g = 255, b = 255; // default white
+    if (py_color && PyTuple_Check(py_color) && PyTuple_Size(py_color) == 3) {
+        r = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 0));
+        g = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 1));
+        b = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 2));
+    }
+
+    EngineObject* engine = (EngineObject *)self;
+    draw_line(engine, x1, y1, x2, y2, r, g, b);
+
+    Py_RETURN_NONE;
+}
+
+// ---- SPRITE ----
+
+// tp_new
+static PyObject* Sprite_new(PyTypeObject* type, PyObject *args, PyObject *kwds){
+    SpriteObject* self = (SpriteObject*)type->tp_alloc(type, 0);
+    if (self){
+        self->texture = NULL;
+        self->x = 0;
+        self->y = 0;
+        self->width = 0;
+        self->height = 0;
+    }
+    return (PyObject*)self;
+}
+
+// loading helper
+static SDL_Texture *load_texture(SDL_Renderer *renderer, const char *path) {
+    SDL_Texture *texture = NULL;
+    SDL_Surface *surface = IMG_Load(path);
+    if (surface) {
+        texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_FreeSurface(surface);
+    }
+    return texture;
+}
+
+
+// tp_init
+static int Sprite_init(SpriteObject* self, PyObject* args, PyObject* kwds){
+    static char* kwlist[] = {"engine", "path", "width", "height", NULL};
+    PyObject* py_engine = NULL;
+    const char* path = NULL;
+    int w = 0, h = 0;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "Os|ii", kwlist,
+                                     &py_engine, &path, &w, &h)) {
+        return -1;
+    }
+
+    EngineObject* engine = (EngineObject*)py_engine;
+    if (!engine->renderer) {
+        PyErr_SetString(PyExc_RuntimeError, "Engine renderer not initialized");
+        return -1;
+    }
+
+    SDL_Texture *texture = load_texture(engine->renderer, path);
+    if (!texture) {
+        printf("ERROR: failed to load texture %s: %s\n", path, SDL_GetError());
+        PyErr_SetString(PyExc_RuntimeError, "Failed to load texture");
+        return -1;
+    }
+
+    // Assign texture and dimensions
+    self->texture = texture;
+    if (w <= 0 || h <= 0) {
+        int tex_w, tex_h;
+        SDL_QueryTexture(texture, NULL, NULL, &tex_w, &tex_h);
+        self->width = tex_w;
+        self->height = tex_h;
+    } else {
+        self->width = w;
+        self->height = h;
+    }
+
+    // Do NOT destroy texture here! It will be destroyed in Sprite_dealloc
+    return 0;
+}
+
+
+// tp_dealloc
+static void Sprite_dealloc(SpriteObject* self) {
+    if (self->texture) {
+        SDL_DestroyTexture(self->texture);
+        self->texture = NULL;
+    }
+    Py_TYPE(self)->tp_free((PyObject*)self);
+}
+
+
+// ---- A T T R I B U T E S ----
+
+// --- GETTERS / SETTERS ---
+
+// sprite widthgetter
+static PyObject* Sprite_get_width(SpriteObject* self) {
+    return PyLong_FromLong(self->width);
+}
+
+// sprite width setter
+static int Sprite_set_width(SpriteObject* self, PyObject* value) {
+    if (!PyLong_Check(value)) {
+        PyErr_SetString(PyExc_TypeError, "width must be an integer");
+        return -1;
+    }
+    self->width = (int)PyLong_AsLong(value);
+    return 0;
+}
+
+
+// sprite height getter
+static PyObject* Sprite_get_height(SpriteObject* self) {
+    return PyLong_FromLong(self->height);
+}
+
+// sprite height setter
+static int Sprite_set_height(SpriteObject* self, PyObject* value) {
+    if (!PyLong_Check(value)) {
+        PyErr_SetString(PyExc_TypeError, "height must be an integer");
+        return -1;
+    }
+    self->height = (int)PyLong_AsLong(value);
+    return 0;
+}
+
+
+// --- TABLE ---
+
+static PyGetSetDef Sprite_getset[] = {
+    {"width", (getter)Sprite_get_width, (setter)Sprite_set_width, NULL, NULL},
+    {"height", (getter)Sprite_get_height, (setter)Sprite_set_height, NULL, NULL},
+    {NULL, NULL, NULL, NULL, NULL}
+};
+
 
 // ---- M E T H O D   T A B L E ----
 
 static PyMethodDef Engine_methods[] = {
     {"draw_rect", py_draw_rect, METH_VARARGS, "Draw a Rectangle"},
     {"run", py_engine_run, METH_VARARGS, "The main loop of the Engine"},
+    {"quit", py_engine_quit, METH_VARARGS, "Quit the Engine"},
+    {"clear", py_engine_clear, METH_VARARGS, "Clear the screen"},
+    {"draw_line", py_draw_line, METH_VARARGS, "Draw a Line"},
     // ...
 
+    {NULL, NULL, 0, NULL}
+};
+
+static PyMethodDef Sprite_methods[] = {
+    // ...
     {NULL, NULL, 0, NULL}
 };
 
@@ -121,6 +304,19 @@ static PyTypeObject EngineType = {
     .tp_init = (initproc)Engine_init,
 };
 
+static PyTypeObject SpriteType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "easyPyEngine.Sprite",
+    .tp_basicsize = sizeof(SpriteObject),
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_doc = "Sprite Object",  // Documentation string
+    .tp_methods = Sprite_methods,
+    .tp_getset = Sprite_getset,
+    .tp_new = Sprite_new,
+    .tp_init = (initproc)Sprite_init,
+    .tp_dealloc = (destructor)Sprite_dealloc
+};
+
 
 // ---- I N I T   P Y T H O N   M O D U L E ----
 
@@ -136,6 +332,8 @@ static struct PyModuleDef easyPyEngine_module = {
 PyMODINIT_FUNC PyInit_easyPyEngine(void) {
     if (PyType_Ready(&EngineType) < 0)
         return NULL;
+    if (PyType_Ready(&SpriteType) < 0)
+        return NULL;
 
     PyObject *m = PyModule_Create(&easyPyEngine_module);
     if (m == NULL)
@@ -143,6 +341,9 @@ PyMODINIT_FUNC PyInit_easyPyEngine(void) {
 
     Py_INCREF(&EngineType);
     PyModule_AddObject(m, "Engine", (PyObject *)&EngineType);
+
+    Py_INCREF(&SpriteType);
+    PyModule_AddObject(m, "Sprite", (PyObject *)&SpriteType);
 
     return m;
 }
