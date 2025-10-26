@@ -104,7 +104,6 @@ void engine_run(EngineObject *self, void (*update_callback)(EngineObject *self, 
         // Delay to limit cpu usage, optimisation
         // small compromise between performance and cpu usage
         SDL_Delay(1);
-
     }
 }
 

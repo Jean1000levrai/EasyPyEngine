@@ -15,8 +15,8 @@ extern "C" {
 typedef struct{
     PyObject_HEAD
     SDL_Texture *texture;
-    int x;
-    int y;
+    float x;
+    float y;
     int width;
     int height;
 } SpriteObject;
@@ -25,7 +25,7 @@ typedef struct{
 // F U N C T I O N S
 
 SpriteObject* load_sprite(SDL_Renderer *renderer, int width, int height, const char *path);
-void draw_sprite(EngineObject *engine, SpriteObject *sprite, int x, int y);
+void draw_sprite(EngineObject *engine, SpriteObject *sprite, float x, float y);
 void free_sprite(SpriteObject *sprite);
 
 

@@ -35,7 +35,7 @@ SpriteObject* load_sprite(SDL_Renderer *renderer, int width, int height, const c
     return sprite;
 }
 
-void draw_sprite(EngineObject *engine, SpriteObject *sprite, int x, int y){
+void draw_sprite(EngineObject *engine, SpriteObject *sprite, float x, float y){
     // draw sprite
     SDL_Rect rect = {x, y, sprite->width, sprite->height};
     sprite->x = x;

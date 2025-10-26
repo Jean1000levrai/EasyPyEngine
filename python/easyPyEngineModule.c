@@ -152,8 +152,8 @@ static PyObject* py_draw_sprite_from_engine(PyObject* self, PyObject* args, PyOb
     static char* kwlist[] = {"sprite", "x", "y", NULL};
     EngineObject* engine = (EngineObject *)self;
     SpriteObject* sprite;
-    int x, y;
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "Oii",kwlist, &sprite, &x, &y)){
+    float x, y;
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "Off",kwlist, &sprite, &x, &y)){
         return NULL;
     }
     draw_sprite(engine, sprite, x, y);
@@ -253,9 +253,9 @@ static PyObject* py_draw_sprite(PyObject* self, PyObject* args, PyObject* kwds){
     static char* kwlist[] = {"engine", "x", "y", NULL};
     EngineObject* engine;
     SpriteObject* sprite = (SpriteObject *)self;
-    int x, y;
+    float x, y;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "Oii", kwlist, &engine, &x, &y)){
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "Off", kwlist, &engine, &x, &y)){
         return NULL;
     }
     draw_sprite(engine, sprite, x, y);
