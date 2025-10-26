@@ -10,6 +10,8 @@
 
 ## About
 
+A very easy to use game engine for python. It is developped in C with the SDL2 library. 
+
 
 ## Installation
 
@@ -29,9 +31,40 @@ cd path/to/your/project
 git clone git@github.com:Jean1000levrai/EasyPyEngine.git
 ```
 
+### create a build folder
+```bash
+mkdir -p build
+```
+
+### CMake
+
+use cmake to build for the python extension
+```bash
+cd build/
+cmake ..
+make
+```
+
+### compile for dev
+
+use compile.sh to make an executable for testing when developing in C
+```bash
+compile.sh
+```
+
+
 ### Additional notes
 
-src/engine.c is the main file
+right now CMakeLists.txt is only optimized for my machine running macos but is planned to be updated to work on most machines (windows, mac, linux)
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=USERNAME/REPO)](https://github.com/Jean1000levrai/EasyPyEngine/graphs/contributors)
+
+
+## License
+
+This project is under thge MIT License, check the LICENSE. 
 
 
 
