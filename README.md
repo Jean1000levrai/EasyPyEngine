@@ -10,52 +10,22 @@
 
 ## About
 
-A very easy to use game engine for python. It is developped in C with the SDL2 library. 
+A very easy to use game engine for python. It is developped in C with the SDL2 library. This project, easyPyEngine, was developed as part of the [Moonshot](https://moonshot.hackclub.com/) event from **Hackclub**.
+
+## Consider checking this part of the documentation
+
+- [Getting Started](docs/getting_started.md)
+- [Usage](docs/usage.md)
 
 
 ## Installation
 
-### Requirements
-
-- python
-- C17+
-- SDL2
-- SDL2_image
-
-### Clone
-
-```bash
-cd path/to/your/project
-```
-```bash
-git clone git@github.com:Jean1000levrai/EasyPyEngine.git
-```
-
-### create a build folder
-```bash
-mkdir -p build
-```
-
-### CMake
-
-use cmake to build for the python extension
-```bash
-cd build/
-cmake ..
-make
-```
-
-### compile for dev
-
-use compile.sh to make an executable for testing when developing in C
-```bash
-compile.sh
-```
+### check out this doc
+[Getting Started](docs/getting_started.md)
 
 
-### Additional notes
 
-right now CMakeLists.txt is only optimized for my machine running macos but is planned to be updated to work on most machines (windows, mac, linux)
+
 
 ## Contributors
 
