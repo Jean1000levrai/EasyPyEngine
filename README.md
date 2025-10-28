@@ -1,4 +1,5 @@
 # EasyPyEngine
+[![Licence](https://hackatime-badge.hackclub.com/U0811ME6L0J/easyPyEngine)](./LICENSE) 
 
 <div align="center">
   <a href="https://moonshot.hackclub.com" target="_blank">
