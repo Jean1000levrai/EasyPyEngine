@@ -4,6 +4,24 @@ This guide will help you throughout your journey of developping with EasyPyEngin
 
 # Contents
 
+- [Import](#import) 
+
+- [Window](#window)
+    - [Creation](#window-creation)
+    - [Drawing](#drawing)
+    - [Mainloop](#mainloop--run)
+    - [Quit](#quit)
+    - [Clear](#clear)
+    - [Input](#input)
+
+- [Sprite](#sprite)
+    - [Create](#create-a-sprite)
+    - [Draw](#draw-sprite)
+
+- [Example](#example-of-code)
+
+- [Collisions](#collisions)
+
 
 ## Consider checking this part of the documentation
 
