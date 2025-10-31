@@ -12,9 +12,8 @@ This guide will help you throughout your journey of developping with EasyPyEngin
 
 ---
 
-# Code
 
-## Import
+# Import
 Read [Getting Started](getting_started.md) 
 and import like any other python library
 ```python
@@ -23,14 +22,14 @@ import easyPyEngine as epe
 from easyPyEngine import *
 ```
 
-#### Convention
+### Convention
 The imported module is often shortened to `epe`. 
 
 <br><br>
 
-## Window
+# Window
 
-### Window creation
+## Window creation
 
 ```python
 engine = easyPyEngine.Engine(<title>: str, width: int, height: int)
@@ -42,12 +41,12 @@ example:
 engine = easyPyEngine.Engine("My Game", 800, 600)
 ```
 
-#### Convention
+### Convention
 The window is often called `engine`. 
 
-### Drawing
+## Drawing
 
-#### To draw a rectangle on the screen:
+### To draw a rectangle on the screen:
 ```python
 engine.draw_rect(<x1>: int, <y1>: int, <x2>: int, <y2>: int, (r, g, b), <filled>: int)  # filled should be 1 for filled or O for hollow
 ```
@@ -55,26 +54,26 @@ engine.draw_rect(<x1>: int, <y1>: int, <x2>: int, <y2>: int, (r, g, b), <filled>
 example:   
 This code draws a red filled rectangle at these coordinates
 ```python title="example"
-engine.draw_rect(<x1>: int, <y1>: int, <x2>: int, <y2>: int, (r, g, b))
+engine.draw_rect(0, 500, 800, 600, (255, 0, 0), 1)
 ```
   
-#### To draw a line:
+### To draw a line:
 ```python
-engine.draw_line(0, 500, 800, 600, (124, 252, 0))
+engine.draw_line(<x1>: int, <y1>: int, <x2>: int, <y2>: int, (r, g, b))
 ```
 
 ```python title="example"
 engine.draw_line(0, 500, 800, 600, (124, 252, 0))
 ```
 
-#### To draw a sprite
+### To draw a sprite
 checkout [Sprite](#sprite) section.
 
 ```python
 engine.draw_sprite(<sprite_name>, x, y)
 ```
 
-### Mainloop / Run
+## Mainloop / Run
 
 The mainloop function will be execute a function each frame. The given function must take a single parameter `delta time`.  
 `delta time`is the time elapsed between two consecutive frames or updates, used to make movement and animations framerate–independent.
@@ -95,28 +94,28 @@ def update(dt):
 engine.run(update)
 ```
 
-### Quit
+## Quit
 
 Use this function to quit safely the app you created. 
 ```python
 engine.quit()
 ```
 
-### Clear
+## Clear
 
 Use this function to clear the screen
 ```python
 engine.clear((r, g, b))
 ```
 
-### Input
+## Input
 
 Use this function in the `update` function. Takes the key code in parameter and returns `True` if the key is pressed or `False` if the key is not being pressed. 
 ```python
 engine.is_key_pressed(<KeyCode>: str)
 ```
-#### !---- IN DEV / DOES NOT WORK ----!
-#### Alternative
+### !---- IN DEV / DOES NOT WORK ----!
+### Alternative
 
 Use this function in the `update` function. Returns the `key code` of the currently pressed key. 
 ```python
@@ -137,9 +136,9 @@ if engine.key_pressed() in ['w', 'z']:
 
 <br><br>
 
-## Sprite
+# Sprite
 
-### Create a sprite
+## Create a sprite
 Only works with .png or .jpg files
 ```python
 sprite = easyPyEngine.Sprite(engine: Engine, path: str, x: int, y: int)
@@ -150,7 +149,7 @@ example:
 sprite = easyPyEngine.Sprite(engine, "path/to/image.png", 100, 100)
 ```
 
-### Draw sprite
+## Draw sprite
 
 ```python
 sprite.draw(engine: Engine, x: int, y: int)
@@ -163,7 +162,7 @@ sprite.draw(engine, 200, 500)
 
 <br><br>
 
-## Example of Code
+# Example of Code
 
 **Note**: 
 - We could have used a class to represent the sprite.
@@ -193,9 +192,9 @@ engine.quit()   # quits the engine safely
 
 <br><br>
 
-## Collisions
+# Collisions
 
-### IN DEV! IT IS A FUTURE FEATURE! NOT CURRENTLY WORKING!
+## IN DEV! IT IS A FUTURE FEATURE! NOT CURRENTLY WORKING!
 
 This will make 2 sprites collide with each other
 ```python
