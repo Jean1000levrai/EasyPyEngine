@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(engine_module C)
+project(easyPyEngine C)
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -12,17 +12,16 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 
-file(GLOB SRC_FILES src/*.c)
-add_library(engine MODULE ${SRC_FILES})
+file(GLOB SRC_FILES src/*.c python/easyPyEngineModule.c)
+add_library(easyPyEngine MODULE ${SRC_FILES})
 
 # Shared object naming for Python module
-set_target_properties(engine PROPERTIES
+set_target_properties(easyPyEngine PROPERTIES
     PREFIX ""
-    SUFFIX ".so"
 )
 
 # Includes
-target_include_directories(engine PRIVATE
+target_include_directories(easyPyEngine PRIVATE
     ${Python3_INCLUDE_DIRS}
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_IMAGE_INCLUDE_DIRS}
@@ -32,7 +31,7 @@ target_include_directories(engine PRIVATE
 set(SDL2_LIB_PATH /opt/homebrew/lib/libSDL2.dylib)
 set(SDL2_IMAGE_LIB_PATH /opt/homebrew/lib/libSDL2_image.dylib)
 
-target_link_libraries(engine PRIVATE
+target_link_libraries(easyPyEngine PRIVATE
     ${Python3_LIBRARIES}
     ${SDL2_LIB_PATH}
     ${SDL2_IMAGE_LIB_PATH}

@@ -1,8 +1,9 @@
-
+# miscellaneous
 .cache/
 assets/profilePicV1.2.PNG
 .venv/
 easyPyEngine.egg-info/
+dist/
 
 # CMake build directories
 /build/

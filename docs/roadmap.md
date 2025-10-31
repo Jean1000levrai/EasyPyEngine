@@ -19,8 +19,8 @@ to do 🤡
 
 ### step 3: inputs + deltatime (~3 hours) 🤡
 
-- key pressed -> returns the key self->keyboardState 😎
-- print input
+- is_key_pressed -> returns the key self->keyboardState 😎
+- key_pressed -> print input
 - mouse
 - add delta time 😎
 
@@ -76,6 +76,11 @@ to do 🤡
 3. Attach the method table to your `Python type` (EngineType)
 
 4. make sure the type is registered in the module (PyInit_EasyPyEngine)
+
+5. 
+```bash
+python3 python/setup.py build
+```
 
 
 

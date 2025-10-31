@@ -1,4 +1,4 @@
-import easyPyEngine
+import build.easyPyEngine
 
 e = easyPyEngine.Engine("yo", 200, 299)
 

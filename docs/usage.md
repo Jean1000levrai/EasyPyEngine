@@ -93,7 +93,7 @@ engine.draw_sprite(<sprite_name>, x, y)
 
 ## Mainloop / Run
 
-The mainloop function will be execute a function each frame. The given function must take a single parameter `delta time`.  
+The mainloop function will execute a function each frame. The given function must take a single parameter `delta time`.  
 `delta time`is the time elapsed between two consecutive frames or updates, used to make movement and animations framerate–independent.
 
 #### Convention
