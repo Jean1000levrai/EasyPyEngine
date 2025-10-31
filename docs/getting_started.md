@@ -80,15 +80,38 @@ make
 ```
 #### Additional notes
 
-right now CMakeLists.txt is only optimized for my machine running macos but is planned to be updated to work on most machines (windows, mac, linux)
+Right now CMakeLists.txt is only optimized for my machine running macos but is planned to be updated to work on most machines (windows, mac, linux)
 
 ### compile for dev
+
+#### Compile to C
 
 Use compile.sh to make an executable for testing when developing in C. 
 ```bash
 compile.sh
 ```
-This script will create an executable in `build/` in launch it.
+This script will create an executable in `build/` and launch it.   
+   
+#### To wrap it to python
+1. Compile it
+```bash
+cd build
+make
+```
+2. Then add the function or object in `python/easyPyEngineModule.c` using the `Python.h` library.   
+3. Then create the shared library for python
+```bash
+python3 example/setup.py build
+```
+4. Test the library in python! Make sure to include the path to the .so by adding the path at the top of your script.
+```python
+import sys
+sys.path.append("/Users/<username>/<path/to/project>/build/lib.macosx-15.0-arm64-cpython-314")
+# the library is here on my device for example
+
+import easyPyEngine
+```
+
 
 
 

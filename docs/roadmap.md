@@ -20,6 +20,7 @@ to do 🤡
 ### step 3: inputs + deltatime (~3 hours) 🤡
 
 - key pressed -> returns the key self->keyboardState 😎
+- print input
 - mouse
 - add delta time 😎
 
@@ -35,6 +36,9 @@ to do 🤡
 - movement (velocity * dt)
 - collision
 - gravity
+
+### "AI"
+- mob pathing (go from A to B wait a bit, then loop)
 
 ### UI
 - buttons

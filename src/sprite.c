@@ -9,12 +9,24 @@ SpriteObject* load_sprite(SDL_Renderer *renderer, int width, int height, const c
         return NULL;
     }
 
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (!texture) {
-        printf("ERROR: failed to create texture from %s: %s\n", path, SDL_GetError());
-        SDL_FreeSurface(surface);
-        return NULL;
+    SDL_Texture* texture;
+    if (strcmp(path, "") == 0){
+        texture = SDL_CreateTexture(
+            renderer,
+            SDL_PIXELFORMAT_RGBA8888,
+            SDL_TEXTUREACCESS_TARGET,
+            width,
+            height
+        );
+    } else {
+        texture = SDL_CreateTextureFromSurface(renderer, surface);
+        if (!texture) {
+            printf("ERROR: failed to create texture from %s: %s\n", path, SDL_GetError());
+            SDL_FreeSurface(surface);
+            return NULL;
+        }
     }
+
 
     SpriteObject *sprite = malloc(sizeof(SpriteObject));
     if (!sprite) {
