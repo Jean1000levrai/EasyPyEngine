@@ -10,7 +10,7 @@ dist/
 /CMakeFiles/
 /CMakeCache.txt
 /Makefile
-/*.cmake.user
+/*.cmake.user 
 /*.cbp
 /*.ninja
 /*.sln
