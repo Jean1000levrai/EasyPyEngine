@@ -49,6 +49,7 @@ to do 🤡
 - loop
 
 ### Shaders
+- shader (GLSL)
 
 ### camera
 - zoom
@@ -58,7 +59,7 @@ to do 🤡
 
 ## documentation & wrap to python
 ### to do once
-- write one
+- write doc
 
 ### to do for each version
 - add autocompletion support

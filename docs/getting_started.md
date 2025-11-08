@@ -117,5 +117,34 @@ import easyPyEngine
 
 # Usage
 
-## ------ TODO ------
+### 1. Install Dependencies
+
+On Ubuntu / Debian. 
+```bash
+sudo apt install libsdl2-dev libsdl2-image-dev
+```
+On 
+```bash
+brew install sdl2 sdl2_image
+```
+
+### 2. Install the files
+
+Go to `https://github.com/Jean1000levrai/EasyPyEngine/`.   
+Install the appropriate version.   
+If on Windows or Linux, it is not released yet.  
+
+### 3. In Python
+
+```python
+import sys
+sys.path.append("path/to/so")
+import easyPyEngine
+```
+**Note:** The specified path should be the folder to `easyPyEngine.so`, Not the .so file directly.
+
+### 4. Start programming
+[Usage](usage.md). 
+
+
 

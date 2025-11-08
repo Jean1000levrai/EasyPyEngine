@@ -1,19 +1,18 @@
-# config file
+[build-system]
+requires = ["scikit-build-core>=0.9.0", "setuptools", "wheel"]
+build-backend = "scikit_build_core.build"
 
 [project]
 name = "easyPyEngine"
 version = "0.1.0"
 requires-python = ">=3.9"
+description = "Minimal 2D game engine in C with SDL2"
 readme = "README.md"
-license = { text = "MIT"}
-
-[build-system]
-requires = ["scikit-build-core>=0.9.0", "setuptools", "wheel"]
-build-backend = "scikit_build_core.build"
+license = { text = "MIT" }
 
 [tool.scikit-build]
 wheel.packages = ["."]
-cmake.args = ["-DPYTHON_EXECUTABLE:FILEPATH={python_executable}"]
-
-
-
+cmake.args = [
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DPYTHON_EXECUTABLE:FILEPATH={python_executable}"
+]
