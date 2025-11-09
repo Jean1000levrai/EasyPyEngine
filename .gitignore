@@ -4,9 +4,10 @@ assets/profilePicV1.2.PNG
 .venv/
 easyPyEngine.egg-info/
 dist/
+__pycache__/
 
 # CMake build directories
-/build/
+/build/*
 /CMakeFiles/
 /CMakeCache.txt
 /Makefile

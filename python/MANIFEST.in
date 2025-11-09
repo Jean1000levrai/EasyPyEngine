@@ -1,0 +1,1 @@
+recursive-include easyPyEngine *.so *.dylib

@@ -1,8 +1,5 @@
-import build.easyPyEngine
-
-e = easyPyEngine.Engine("yo", 200, 299)
-
-def update(dt):
-    pass
-
-e.run(update)
+import sys
+sys.path.append("python/easyPyEngine")
+import easyPyEngine
+print(dir(easyPyEngine))
+e = easyPyEngine.Engine("My Game", 800, 600)

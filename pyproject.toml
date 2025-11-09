@@ -5,14 +5,11 @@ build-backend = "scikit_build_core.build"
 [project]
 name = "easyPyEngine"
 version = "0.1.0"
-requires-python = ">=3.9"
-description = "Minimal 2D game engine in C with SDL2"
+description = "Minimal 2D C-based Python game engine"
 readme = "README.md"
 license = { text = "MIT" }
+requires-python = ">=3.9"
 
 [tool.scikit-build]
-wheel.packages = ["."]
-cmake.args = [
-    "-DCMAKE_BUILD_TYPE=Release",
-    "-DPYTHON_EXECUTABLE:FILEPATH={python_executable}"
-]
+wheel.packages = ["python/easyPyEngine"]
+cmake.verbose = true
