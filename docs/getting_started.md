@@ -42,9 +42,21 @@ On windows >= 10: install from the internet
 
 ---
 
-# Developpement
+# Setup for Developpement
 
-## Setup
+## 1. Install Dependencies
+
+On Ubuntu / Debian. 
+```bash
+sudo apt install libsdl2-dev libsdl2-image-dev
+```
+On MacOs
+```bash
+brew install sdl2 sdl2_image
+```
+
+
+## 2. Setup
 
 ### Clone
 
@@ -52,7 +64,7 @@ On windows >= 10: install from the internet
 cd path/to/your/project
 ```
 ```bash
-git clone git@github.com:Jean1000levrai/EasyPyEngine.git
+git clone https://github.com/Jean1000levrai/EasyPyEngine.git
 ```
 
 ### create a build folder
@@ -60,7 +72,7 @@ git clone git@github.com:Jean1000levrai/EasyPyEngine.git
 mkdir -p build
 ```
 
-## Notes
+## 3. Notes
 
 ### Virtual Environment for Python
 
@@ -113,37 +125,48 @@ import easyPyEngine
 ```
 
 
-
-
 # Usage
 
-### 1. Install Dependencies
 
-On Ubuntu / Debian. 
+## 1. Install
+
+**If on Windows, it is not released yet, Use WSL.**
+
+### On Linux
 ```bash
-sudo apt install libsdl2-dev libsdl2-image-dev
-```
-On 
-```bash
-brew install sdl2 sdl2_image
+pip install https://github.com/Jean1000levrai/EasyPyEngine/releases/download/pre-alpha/easypyengine-0.1.0-linux.whl
 ```
 
-### 2. Install the files
+### On macOs
+```bash
+pip install https://github.com/Jean1000levrai/EasyPyEngine/releases/download/pre-alpha/easypyengine-0.1.0-macos.whl
+```
+
+### If you have trouble with pip
 
 Go to `https://github.com/Jean1000levrai/EasyPyEngine/`.   
-Install the appropriate version.   
-If on Windows or Linux, it is not released yet.  
+1. **Download** the appropriate archive from github releases.   
+If you can't find it, the wheel files are in the source code `release/`.   
 
-### 3. In Python
+2. **Install** it: 
+    - **Extract** the contents:
+    ```bash
+    unzip ~/Downloads/release-macos-0.1.0.zip
+    # or
+    tar -xzf ~/Downloads/release-macos-0.1.0.tar.gz
+    ```
+    - **Install** the package using pip:
+    ```bash
+    pip install ~/Downloads/release-macos-0.1.0/easypyengine-0.1.0-py3-none-any.whl
+    ```
+
+## 2. In Python
 
 ```python
-import sys
-sys.path.append("path/to/so")
-import easyPyEngine
+import easyPyEngine.easyPyEngine as epe
 ```
-**Note:** The specified path should be the folder to `easyPyEngine.so`, Not the .so file directly.
 
-### 4. Start programming
+## 3. Start programming
 [Usage](usage.md). 
 
 
