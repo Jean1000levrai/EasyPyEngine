@@ -1,13 +1,25 @@
 # miscellaneous
 .cache/
 assets/profilePicV1.2.PNG
-.venv/
 easyPyEngine.egg-info/
-dist/
+.DS_Store
+
+# Python
+requirements.txt
+setup_old.py
 __pycache__/
+.venv/
+
+# github
+.github/workflows/build.yml
+
+# build
+release/
+dist/
+/build/*
+dist_bak/
 
 # CMake build directories
-/build/*
 /CMakeFiles/
 /CMakeCache.txt
 /Makefile

@@ -12,8 +12,8 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 
-file(GLOB SRC_FILES src/*.c)
-add_library(easyPyEngine MODULE ${SRC_FILES} python/easyPyEngine.c)
+file(GLOB SRC_FILES src/*.c python/easyPyEngine.c)
+add_library(easyPyEngine MODULE ${SRC_FILES})
 
 # so name 
 set_target_properties(easyPyEngine PROPERTIES
