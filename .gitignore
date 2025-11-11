@@ -14,7 +14,6 @@ __pycache__/
 .github/workflows/build.yml
 
 # build
-release/
 dist/
 /build/*
 dist_bak/
