@@ -1,11 +1,12 @@
 import sys
-sys.path.append("/Users/jeansalomon/Documents/projects/easyPyEngine/build/lib.macosx-15.0-arm64-cpython-314")
+sys.path.append("/Users/jeansalomon/Documents/projects/easyPyEngine/python/easyPyEngine")
 
 import easyPyEngine as epe
 
 
 engine = epe.Engine("My Game", 800, 600)
-sprite = epe.Sprite(engine, "assets/profilePicV1.2.png", 100, 100)
+sprite = epe.Sprite()
+sprite.add_image(engine, "../assets/profilePicV1.2.png", 100, 100)
 x: int = 100
 y: int = 400
 speed: int = 200

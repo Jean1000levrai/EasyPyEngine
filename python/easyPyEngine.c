@@ -200,6 +200,21 @@ static SDL_Texture *load_texture(SDL_Renderer *renderer, const char *path) {
 
 // tp_init
 static int Sprite_init(SpriteObject* self, PyObject* args, PyObject* kwds){
+
+    return 0;
+}
+
+// tp_dealloc
+static void Sprite_dealloc(SpriteObject* self) {
+    if (self->texture) {
+        SDL_DestroyTexture(self->texture);
+        self->texture = NULL;
+    }
+    Py_TYPE(self)->tp_free((PyObject*)self);
+}
+
+// Add Image
+static PyObject* py_add_image(SpriteObject* self, PyObject* args, PyObject* kwds){
     static char* kwlist[] = {"engine", "path", "width", "height", NULL};
     PyObject* py_engine = NULL;
     const char* path = NULL;
@@ -207,20 +222,19 @@ static int Sprite_init(SpriteObject* self, PyObject* args, PyObject* kwds){
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "Os|ii", kwlist,
                                      &py_engine, &path, &w, &h)) {
-        return -1;
+        Py_RETURN_NONE;
     }
-
     EngineObject* engine = (EngineObject*)py_engine;
     if (!engine->renderer) {
         PyErr_SetString(PyExc_RuntimeError, "Engine renderer not initialized");
-        return -1;
+        Py_RETURN_NONE;
     }
 
     SDL_Texture *texture = load_texture(engine->renderer, path);
     if (!texture) {
         printf("ERROR: failed to load texture %s: %s\n", path, SDL_GetError());
         PyErr_SetString(PyExc_RuntimeError, "Failed to load texture");
-        return -1;
+        Py_RETURN_NONE;
     }
 
     // Assign texture and dimensions
@@ -236,16 +250,7 @@ static int Sprite_init(SpriteObject* self, PyObject* args, PyObject* kwds){
     }
 
     // Do NOT destroy texture here! It will be destroyed in Sprite_dealloc
-    return 0;
-}
-
-// tp_dealloc
-static void Sprite_dealloc(SpriteObject* self) {
-    if (self->texture) {
-        SDL_DestroyTexture(self->texture);
-        self->texture = NULL;
-    }
-    Py_TYPE(self)->tp_free((PyObject*)self);
+    Py_RETURN_NONE;
 }
 
 // DRAW SPRITE
@@ -365,6 +370,7 @@ static PyMethodDef Engine_methods[] = {
 
 static PyMethodDef Sprite_methods[] = {
     {"draw", (PyCFunction)py_draw_sprite, METH_VARARGS | METH_KEYWORDS, "Draw a Sprite"},
+    {"add_image", (PyCFunction)py_add_image, METH_VARARGS | METH_KEYWORDS, "Add a Texture"},
     // ...
     {NULL, NULL, 0, NULL}
 };

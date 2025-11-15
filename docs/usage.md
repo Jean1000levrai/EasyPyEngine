@@ -159,12 +159,19 @@ if engine.key_pressed() in ['w', 'z']:
 ## Create a sprite
 Only works with .png or .jpg files
 ```python
-sprite = easyPyEngine.Sprite(engine: Engine, path: str, x: int, y: int)
+sprite = easyPyEngine.Sprite()
 ```
+
+Add it a texture. 
+```python
+Sprite.add_image(engine: Engine, path: str, x: int, y: int)
+```
+This design choice has been made to able to create sprites without giving it a .png or .jpg file so that you could create one with a rectangle drawn from the engine texture.  
 
 example:
 ```python title="example"
-sprite = easyPyEngine.Sprite(engine, "path/to/image.png", 100, 100)
+sprite = easyPyEngine.Sprite()
+sprite.add_image(engine, "path/to/image.png", 100, 100)
 ```
 
 ## Draw sprite
