@@ -253,6 +253,29 @@ static PyObject* py_add_image(SpriteObject* self, PyObject* args, PyObject* kwds
     Py_RETURN_NONE;
 }
 
+// Add Rectangle
+static PyObject* py_add_rect(SpriteObject* self, PyObject* args, PyObject* kwds){
+    static char* kwlist[] = {"width", "height", "color", "filled",NULL};
+    float w, h;
+    PyObject* py_color = NULL;
+    int f;
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "ii|Oi", kwlist, &w, &h, &py_color, &f)){
+        return NULL;
+    }
+
+    int r = 255, g = 255, b = 255; // default white
+    if (py_color && PyTuple_Check(py_color) && PyTuple_Size(py_color) == 3) {
+        r = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 0));
+        g = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 1));
+        b = (int)PyLong_AsLong(PyTuple_GetItem(py_color, 2));
+    }
+
+    self->width = w;
+    self->height = h;
+    Py_RETURN_NONE;
+}
+
+
 // DRAW SPRITE
 static PyObject* py_draw_sprite(PyObject* self, PyObject* args, PyObject* kwds){
     static char* kwlist[] = {"engine", "x", "y", NULL};
@@ -371,6 +394,7 @@ static PyMethodDef Engine_methods[] = {
 static PyMethodDef Sprite_methods[] = {
     {"draw", (PyCFunction)py_draw_sprite, METH_VARARGS | METH_KEYWORDS, "Draw a Sprite"},
     {"add_image", (PyCFunction)py_add_image, METH_VARARGS | METH_KEYWORDS, "Add a Texture"},
+    {"add_rect", (PyCFunction)py_add_rect, METH_VARARGS | METH_KEYWORDS, "Add a Rectangle"},
     // ...
     {NULL, NULL, 0, NULL}
 };

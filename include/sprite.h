@@ -19,6 +19,10 @@ typedef struct{
     float y;
     int width;
     int height;
+    int r;
+    int g;
+    int b;
+    int filled;
 } SpriteObject;
 
 
