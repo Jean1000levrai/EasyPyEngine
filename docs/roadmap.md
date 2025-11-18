@@ -37,8 +37,9 @@ to do 🤡
 - collision
 - gravity
 
-### "AI"
+### misc
 - mob pathing (go from A to B wait a bit, then loop)
+- procedural gen
 
 ### UI
 - buttons
