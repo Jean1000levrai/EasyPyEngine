@@ -1,5 +1,6 @@
 #include <Python.h>
 #include <SDL2/SDL.h>
+#include <stdio.h>
 
 #include "engine.h"
 #include "graphics.h"
@@ -249,7 +250,6 @@ static PyObject* py_add_image(SpriteObject* self, PyObject* args, PyObject* kwds
         self->height = h;
     }
 
-    // Do NOT destroy texture here! It will be destroyed in Sprite_dealloc
     Py_RETURN_NONE;
 }
 
@@ -272,6 +272,11 @@ static PyObject* py_add_rect(SpriteObject* self, PyObject* args, PyObject* kwds)
 
     self->width = w;
     self->height = h;
+    self->r = r;
+    self->g = g;
+    self->b = b;
+    self->filled = f;
+
     Py_RETURN_NONE;
 }
 
@@ -286,7 +291,13 @@ static PyObject* py_draw_sprite(PyObject* self, PyObject* args, PyObject* kwds){
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "Off", kwlist, &engine, &x, &y)){
         return NULL;
     }
-    draw_sprite(engine, sprite, x, y);
+    
+    if (!sprite->texture) {
+        draw_rect(engine, x, y, sprite->width, sprite->height, sprite->r, sprite->g, sprite->b, sprite->filled);
+    }
+    else {
+        draw_sprite(engine, sprite, x, y);
+    }
     Py_RETURN_NONE;
 }
 

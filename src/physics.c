@@ -11,4 +11,9 @@
 
 void collision(EngineObject *engine, SpriteObject *sprite1, SpriteObject *sprite2){
     // TODO: implement collision detection
+    
+
+
+
+
 }

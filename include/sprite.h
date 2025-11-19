@@ -23,6 +23,7 @@ typedef struct{
     int g;
     int b;
     int filled;
+    char **tags;
 } SpriteObject;
 
 
