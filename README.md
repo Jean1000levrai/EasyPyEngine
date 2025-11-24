@@ -35,7 +35,7 @@ A very easy to use game engine for python. It is developped in C with the SDL2 l
 
 ## License
 
-This project is under thge MIT License, check the LICENSE. 
+This project is under the MIT License, check the [LICENSE](LICENSE). 
 
 
 
