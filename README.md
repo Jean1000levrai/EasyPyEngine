@@ -11,7 +11,14 @@
 
 ## About
 
-A very easy to use game engine for python. It is developped in C with the SDL2 library. This project, easyPyEngine, was developed as part of the [Moonshot](https://moonshot.hackclub.com/) event from **Hackclub**.
+A very easy to use game engine for python. It is developped in C with the SDL2 library. This project, easyPyEngine, was developed as part of the [Moonshot](https://moonshot.hackclub.com/) event from **Hackclub**.   
+
+## Demo Game
+
+[Game](https://github.com/Jean1000levrai/Stealth-Game)
+
+## Screenshot
+![ressources](ressources/s1.png)
 
 ## Consider checking this part of the documentation
 
