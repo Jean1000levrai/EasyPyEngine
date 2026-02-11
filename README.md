@@ -1,48 +1,90 @@
 # EasyPyEngine
 [![Licence](https://hackatime-badge.hackclub.com/U0811ME6L0J/easyPyEngine)](./LICENSE) 
 
-<div align="center">
-  <a href="https://moonshot.hackclub.com" target="_blank">
-    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/35ad2be8c916670f3e1ac63c1df04d76a4b337d1_moonshot.png" 
-         alt="This project is part of Moonshot, a 4-day hackathon in Florida visiting Kennedy Space Center and Universal Studios!" 
-         style="width: 100%;">
-  </a>
-</div>
+EasyPyEngine is a beginner-friendly 2D game engine for Python, written in C using SDL2.  
+It provides a built-in game loop, simple asset loading, and basic rendering utilities for rapid prototyping and learning game development.
 
-## About
+## 🚀 Features
 
-A very easy to use game engine for python. It is developped in C with the SDL2 library. This project, easyPyEngine, was developed as part of the [Moonshot](https://moonshot.hackclub.com/) event from **Hackclub**.   
+- 🎮 Built-in game loop
+- 🕹 Keyboard input handling
+- 📦 Sprite system (images and rectangles)
+- ✔️ Delta-time support for smooth movement
+- ⚙️ Simple and readable Python API
 
-## Demo Game
+## 📸 Screenshot & Demo
+![ressources](ressources/demo2.png)   
+👉 The [Game](https://github.com/Jean1000levrai/Stealth-Game)
 
-[Game](https://github.com/Jean1000levrai/Stealth-Game)
+## 🧪 Quick Example (Python)
+```python
+import easyPyEngine as epe
 
-## Screenshot
-![ressources](ressources/s1.png)
+engine = epe.Engine("My Game", 800, 600)
 
-## Consider checking this part of the documentation
+sprite = epe.Sprite()
+sprite.add_image(engine, "path/to/image.png", 100, 100)
 
-- [Getting Started](docs/getting_started.md)
-- [Usage](docs/usage.md)
+sp2 = epe.Sprite()
+sp2.add_rect(100, 100, (255, 0, 0), 1)
+
+x = 100
+y = 400
+speed = 200
+
+def update(dt):
+    global x, y
+
+    engine.clear(color=(135, 206, 235))
+    engine.draw_rect(0, 500, 800, 600, (124, 252, 0), 1)
+
+    sp2.draw(engine, 100, 400)
+    sprite.draw(engine, x, y)
+
+    if engine.is_key_pressed("w"):
+        sprite.height += 2
+    if engine.is_key_pressed("s"):
+        sprite.height -= 2
+    if engine.is_key_pressed("a"):
+        x -= speed * dt
+    if engine.is_key_pressed("d"):
+        x += speed * dt
+
+engine.run(update)
+engine.quit()
+
+```
+
+## 📘 Documentation
+
+Explore the guides below to begin using the engine:   
+- [Getting Started](docs/getting_started.md) – Setup, build and install basics
+- [Usage](docs/usage.md) – API reference and example code
 
 
-## Installation
 
-### check out this doc
+## ⚙️ Installatoin
+Check out this part of the documentation:
 [Getting Started](docs/getting_started.md)
 
+## 🧠 Motivation
 
+EasyPyEngine was developed as part of the Moonshot Hack Club event.   
+It’s designed to introduce Python developers to game engine fundamentals without overwhelming complexity.
 
+## 🧩 Contributing
 
+Contributions are welcome. See CONTRIBUTING.md for guidelines on reporting bugs, proposing features, and submitting pull requests.  
+Before contributing, please ensure you follow the code style and documentation standards.
 
-## Contributors
+## 🤝 Contributors
 
 [![Contributors](https://contrib.rocks/image?repo=USERNAME/REPO)](https://github.com/Jean1000levrai/EasyPyEngine/graphs/contributors)
 
 
-## License
+## 📄 License
 
-This project is under the MIT License, check the [LICENSE](LICENSE). 
+This project is licensed under the MIT License — see [LICENSE](LICENSE) for more details. 
 
 
 
