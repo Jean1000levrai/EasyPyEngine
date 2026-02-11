@@ -13,7 +13,7 @@ It provides a built-in game loop, simple asset loading, and basic rendering util
 - ⚙️ Simple and readable Python API
 
 ## 📸 Screenshot & Demo
-![ressources](ressources/demo2.png)   
+![ressources](ressources/demo2.gif)   
 👉 The [Game](https://github.com/Jean1000levrai/Stealth-Game)
 
 ## 🧪 Quick Example (Python)
