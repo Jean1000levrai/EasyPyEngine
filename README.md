@@ -63,7 +63,7 @@ Explore the guides below to begin using the engine:
 
 
 
-## ⚙️ Installatoin
+## ⚙️ Installation
 Check out this part of the documentation:
 [Getting Started](docs/getting_started.md)
 
